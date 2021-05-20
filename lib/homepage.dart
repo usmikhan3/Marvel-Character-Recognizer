@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tflite/tflite.dart';
 
 
 class MyHomePage extends StatefulWidget {
@@ -25,9 +26,37 @@ class _MyHomePageState extends State<MyHomePage> {
     loadDataModelFiles();
   }
 
-  loadDataModelFiles() async{}
+  loadDataModelFiles() async{
+    String output = await Tflite.loadModel(
+      model: "assets/model_unquant.tflite",
+      labels: "assets/labels.txt",
+      numThreads: 1,
+      isAsset: true,
+      useGpuDelegate: false
+    );
+  }
 
-  doImageClassification() async{}
+  doImageClassification() async{
+    var recognition = await Tflite.runModelOnImage(
+        path: _image.path,
+        imageMean: 0.0,
+      imageStd: 255.0,
+      numResults: 2,
+      threshold: 0.1,
+      asynch: true
+    );
+    print(recognition.length.toString());
+    setState(() {
+      result = "";
+    });
+    recognition.forEach((element) {
+      setState(() {
+        print(element.toString());
+        result += element["label"];
+      });
+    });
+
+  }
 
 
   selectPhoto() async{
@@ -53,6 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
           decoration: BoxDecoration(

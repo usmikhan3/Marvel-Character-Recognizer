@@ -11,7 +11,7 @@ class _MySplashState extends State<MySplash> {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      seconds: 10,
+      seconds: 6,
       navigateAfterSeconds: MyHomePage(),
       title: Text(
         'Avengers',
@@ -26,7 +26,7 @@ class _MySplashState extends State<MySplash> {
       photoSize: 180,
       loaderColor: Colors.red,
       loadingText: Text(
-        "from Coding Cafe",
+        "By M.U.K",
         style: TextStyle(
             color: Colors.pinkAccent, fontSize: 16.0, fontFamily: "Brand Bold"),
       ),
